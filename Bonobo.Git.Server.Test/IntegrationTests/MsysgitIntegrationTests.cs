@@ -5,7 +5,9 @@ using Bonobo.Git.Server.Test.IntegrationTests;
 using Bonobo.Git.Server.Test.IntegrationTests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using SpecsFor.Mvc;
 using System;
@@ -99,6 +101,15 @@ namespace Bonobo.Git.Server.Test.Integration.ClAndWeb
                 Assert.Fail("Cannot have any credential.helpers configured for integration tests.");
             }
 
+            RemoteWebDriver driver = MvcWebApp.Driver.GetDriver();
+            ICapabilities capabilities = driver.Capabilities;
+            InternetExplorerOptions ieCapabilities = capabilities as InternetExplorerOptions;
+            if (ieCapabilities != null)
+            {
+                ieCapabilities.IgnoreZoomLevel = true;
+                ieCapabilities.EnableNativeEvents = false;
+                ieCapabilities.EnablePersistentHover = true;
+            }
             app = new MvcWebApp();
             ITH = new IntegrationTestHelpers(app, lc);
 

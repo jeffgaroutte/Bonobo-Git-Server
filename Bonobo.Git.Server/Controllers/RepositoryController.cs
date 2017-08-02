@@ -16,6 +16,7 @@ using Ionic.Zip;
 using Microsoft.Practices.Unity;
 using MimeTypes;
 using System.Security.Principal;
+using Bonobo.Git.Server.Git.GitService;
 
 namespace Bonobo.Git.Server.Controllers
 {
@@ -49,7 +50,8 @@ namespace Bonobo.Git.Server.Controllers
                                             .AsEnumerable();
             }
 
-            foreach(var item in firstList){
+            foreach (var item in firstList)
+            {
                 SetGitUrls(item);
             }
             var list = firstList
@@ -125,10 +127,11 @@ namespace Bonobo.Git.Server.Controllers
                 return RedirectToAction("Unauthorized", "Home");
             }
 
-            var model = new RepositoryDetailModel
+            RepositoryDetailModel model = new CreateRepositoryModel
             {
                 Administrators = new UserModel[] { MembershipService.GetUserModel(User.Id()) },
             };
+            PopulateFileOptions((CreateRepositoryModel)model);
             PopulateCheckboxListData(ref model);
             return View(model);
         }
@@ -136,7 +139,7 @@ namespace Bonobo.Git.Server.Controllers
         [HttpPost]
         [WebAuthorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RepositoryDetailModel model)
+        public ActionResult Create(CreateRepositoryModel model)
         {
             if (!RepositoryPermissionService.HasCreatePermission(User.Id()))
             {
@@ -165,6 +168,9 @@ namespace Bonobo.Git.Server.Controllers
                         TempData["CreateSuccess"] = true;
                         TempData["SuccessfullyCreatedRepositoryName"] = model.Name;
                         TempData["SuccessfullyCreatedRepositoryId"] = repo_model.Id;
+                        
+                        SeedRepository(path, model.FileOptions, MembershipService.GetUserModel(this.User.Id())?? MembershipService.GetUserModel(this.User.Username()) 
+                            ?? model.Administrators?.FirstOrDefault()??model.Users?.FirstOrDefault()?? new UserModel {  GivenName="System", Email="@"});
                         return RedirectToAction("Index");
                     }
                     else
@@ -178,8 +184,11 @@ namespace Bonobo.Git.Server.Controllers
                     ModelState.AddModelError("", Resources.Repository_Create_Failure);
                 }
             }
-            PopulateCheckboxListData(ref model);
-            return View(model);
+            PopulateFileOptions(model);
+
+            RepositoryDetailModel boxedModel = model;
+            PopulateCheckboxListData(ref boxedModel);
+            return View(boxedModel);
         }
 
         [WebAuthorizeRepository(RequiresRepositoryAdministrator = true)]
@@ -439,7 +448,8 @@ namespace Bonobo.Git.Server.Controllers
                 var commits = browser.GetTags(name, page, 10, out referenceName, out totalCount);
                 PopulateBranchesData(browser, referenceName);
                 ViewBag.TotalCount = totalCount;
-                return View(new RepositoryCommitsModel {
+                return View(new RepositoryCommitsModel
+                {
                     Commits = commits,
                     Name = repo.Name,
                     Logo = new RepositoryLogoDetailModel(repo.Logo)
@@ -500,7 +510,8 @@ namespace Bonobo.Git.Server.Controllers
                     }
                     commit.Links = links;
                 }
-                return View(new RepositoryCommitsModel {
+                return View(new RepositoryCommitsModel
+                {
                     Commits = commits,
                     Name = repo.Name,
                     Logo = new RepositoryLogoDetailModel(repo.Logo)
@@ -570,10 +581,10 @@ namespace Bonobo.Git.Server.Controllers
                         string sourceRepositoryPath = Path.Combine(UserConfiguration.Current.Repositories, source_repo.Name);
 
                         LibGit2Sharp.CloneOptions options = new LibGit2Sharp.CloneOptions()
-                            {
-                                IsBare = true,
-                                Checkout = false
-                            };
+                        {
+                            IsBare = true,
+                            Checkout = false
+                        };
 
                         LibGit2Sharp.Repository.Clone(sourceRepositoryPath, targetRepositoryPath, options);
 
@@ -617,7 +628,8 @@ namespace Bonobo.Git.Server.Controllers
                 var name = PathEncoder.Decode(encodedName);
                 string referenceName;
                 var commits = browser.GetHistory(path, name, out referenceName);
-                return View(new RepositoryCommitsModel {
+                return View(new RepositoryCommitsModel
+                {
                     Commits = commits,
                     Name = repo.Name,
                     Logo = new RepositoryLogoDetailModel(repo.Logo)
@@ -643,7 +655,7 @@ namespace Bonobo.Git.Server.Controllers
             {
                 model.Administrators = model.PostedSelectedAdministrators.Select(x => MembershipService.GetUserModel(x)).ToArray();
             }
-            model.PostedSelectedAdministrators =  new Guid[0];
+            model.PostedSelectedAdministrators = new Guid[0];
             model.PostedSelectedUsers = new Guid[0];
             model.PostedSelectedTeams = new Guid[0];
         }
@@ -747,6 +759,28 @@ namespace Bonobo.Git.Server.Controllers
             }
 
             fsi.Delete();
+        }
+
+        private void SeedRepository(string pathToRepository, Dictionary<string, string> fileSelections, UserModel user)
+        {
+            using (var repo = new LibGit2Sharp.Repository(pathToRepository))
+            {
+                FileTemplateConfiguration.AddFiles(repo, string.Empty, fileSelections,user.DisplayName,user.Email);
+            }
+        }
+
+        private void PopulateFileOptions(CreateRepositoryModel model)
+        {
+            Dictionary<string, List<string>> templates = FileTemplateConfiguration.FileTemplates;
+            model.FileTemplates = new Dictionary<string, SelectList>();
+            model.FileOptions = new Dictionary<string, string>();
+            foreach (var name in templates.Keys)
+            {
+                SelectList items = new SelectList(new string[] { "None" }.Concat(templates[name].Select(n => n.Split('\\').Last())), "None");
+
+                model.FileOptions.Add(name.Split('\\').Last(), null);
+                model.FileTemplates.Add(name.Split('\\').Last(), items);
+            }
         }
     }
 }

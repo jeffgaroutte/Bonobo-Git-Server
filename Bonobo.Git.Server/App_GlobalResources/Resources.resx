@@ -951,4 +951,13 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Home_About_Title" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="Repository_Create_Add_File" xml:space="preserve">
+    <value>Add a {0} file to the repository.</value>
+  </data>
+  <data name="Repository_Seed_Initial_Files_Commit_Message" xml:space="preserve">
+    <value>Added initial files on the creation of the repository.</value>
+  </data>
+  <data name="Repository_File_Templates_None" xml:space="preserve">
+    <value>None</value>
+  </data>
 </root>

@@ -277,6 +277,7 @@
     <Compile Include="Configuration\AuthenticationSettings.cs" />
     <Compile Include="Configuration\DiagnosticReporter.cs" />
     <Compile Include="Configuration\FederationSettings.cs" />
+    <Compile Include="Configuration\FileTemplates.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Data\ADBackend.cs" />
     <Compile Include="Data\ADBackendStore.cs" />
@@ -415,6 +416,36 @@
     <Compile Include="FilterProviders\UnityFilterAttributeFilterProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\FileOptions\License.txt\afl-3.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\agpl-3.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\apache-2.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\artistic-2.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\bsd-2-clause.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\bsd-3-clause-clear.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\bsd-3-clause.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\bsl-1.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\cc-by-4.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\cc-by-sa-4.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\cc0-1.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\ecl-2.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\epl-1.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\eupl-1.1.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\gpl-2.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\gpl-3.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\isc.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\lgpl-2.1.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\lgpl-3.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\lppl-1.3c.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\mit.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\mpl-2.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\ms-pl.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\ms-rl.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\ncsa.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\ofl-1.1.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\osl-3.0.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\postgresql.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\unlicense.txt" />
+    <Content Include="App_Data\FileOptions\License.txt\zlib.txt" />
     <Content Include="App_Data\Git\antiword.exe" />
     <Content Include="App_Data\Git\basename.exe" />
     <Content Include="App_Data\Git\bash.exe" />
@@ -632,6 +663,8 @@
     <Content Include="Content\fonts\opensans-regular.ttf" />
     <Content Include="Content\fonts\opensans-regular.woff" />
     <Content Include="App_Data\.gitconfig" />
+    <Content Include="App_Data\FileOptions\ReadMe.md\Empty.md" />
+    <Content Include="App_Data\FileOptions\.gitignore\VisualStudio.gitignore" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <Content Include="Views\Repository\Blob.cshtml" />
     <Content Include="Views\Repository\Clone.cshtml" />

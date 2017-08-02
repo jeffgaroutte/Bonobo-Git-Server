@@ -1287,6 +1287,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a {0} file to the repository..
+        /// </summary>
+        public static string Repository_Create_Add_File {
+            get {
+                return ResourceManager.GetString("Repository_Create_Add_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Repository_Create_Back {
@@ -1656,6 +1665,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Repository_File_Templates_None {
+            get {
+                return ResourceManager.GetString("Repository_File_Templates_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy repository URL.
         /// </summary>
         public static string Repository_Git_Url_Copy {
@@ -1823,6 +1841,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string Repository_Rescan_Directory {
             get {
                 return ResourceManager.GetString("Repository_Rescan_Directory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added initial files on the creation of the repository..
+        /// </summary>
+        public static string Repository_Seed_Initial_Files_Commit_Message {
+            get {
+                return ResourceManager.GetString("Repository_Seed_Initial_Files_Commit_Message", resourceCulture);
             }
         }
         

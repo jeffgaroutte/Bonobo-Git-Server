@@ -83,6 +83,7 @@ namespace Bonobo.Git.Server.Models
         public const string NameValidityRegex = @"([\w\.-])*([\w])$";
     }
 
+   
     public class RepositoryDetailModel
     {
         public RepositoryDetailModel()
@@ -155,6 +156,12 @@ namespace Bonobo.Git.Server.Models
         public string LinksUrl { get; set; }
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_LinksUseGlobal")]
         public bool LinksUseGlobal { get; set; }
+    }
+
+    public class CreateRepositoryModel : RepositoryDetailModel
+    {
+        public Dictionary<string, SelectList> FileTemplates { get; set; }
+        public Dictionary<string, string> FileOptions { get; set; }
     }
 
     public enum RepositoryDetailStatus
